@@ -39,8 +39,13 @@
   #wave { position:absolute; left:0; bottom:0; width:1080px; }
   #wave svg { position:absolute; left:0; top:0; width:100%; height:180px; }
   #waveFill { position:absolute; left:0; top:178px; width:100%; bottom:0; background:var(--navy); }
-  #ctaLogo { position:absolute; left:50%; width:560px; margin-left:-280px; top:150px; }
-  .ctaLead { font-size:60px; font-weight:700; color:var(--navy); }
+  #ctaLogo { position:absolute; left:50%; width:420px; margin-left:-210px; top:60px; }
+  .callToday { font-family:var(--font-head); font-size:118px; font-weight:900; color:var(--navy); letter-spacing:-0.01em; }
+  .ctaLead { font-size:54px; font-weight:700; color:var(--navy-2); }
+  #qrCard { position:absolute; left:50%; top:1330px; width:400px; height:400px; margin-left:-200px;
+            background:#fff; border-radius:28px; padding:20px; box-shadow:0 0 0 8px var(--gold); }
+  #qrCard img { width:360px; height:360px; display:block; }
+  .scan { font-size:40px; font-weight:700; color:#fff; }
   .phone { font-family:var(--font-head); font-weight:900; font-size:134px; color:var(--gold); letter-spacing:-0.01em; }
   .site  { font-size:64px; font-weight:700; color:#fff; }
   .tag   { font-size:46px; font-weight:700; color:var(--gold); letter-spacing:0.08em; }
@@ -102,11 +107,14 @@
   <!-- PART 3: CALL TO ACTION -->
   <div class="layer" id="part3">
     <img id="ctaLogo" src="../assets/logo.png">
-    <div class="center ctaLead a" style="top:790px">Call us for a free consultation</div>
-    <div class="center phone a" style="top:1090px">772-732-1223</div>
-    <div id="underline" style="top:1265px"></div>
-    <div class="center site a" style="top:1340px">TC-SeniorLiving.com</div>
-    <div class="center tag a" style="top:1500px">FREE &middot; LOCAL &middot; NURSE-LED</div>
+    <div class="center callToday a" style="top:420px">Call today</div>
+    <div class="center ctaLead a" style="top:575px">for a free consultation</div>
+    <div class="center tag a" style="top:670px; color:var(--gold-text)">FREE &middot; LOCAL &middot; NURSE-LED</div>
+    <div class="center phone a" style="top:985px">772-732-1223</div>
+    <div id="underline" style="top:1160px"></div>
+    <div class="center site a" style="top:1195px">TC-SeniorLiving.com</div>
+    <div id="qrCard" class="a"><img src="../assets/qr-tc-seniorliving.svg"></div>
+    <div class="center scan a" style="top:1765px">Scan to visit our website</div>
   </div>
 
 <script>
@@ -168,20 +176,20 @@
     });
 
     /* ---------- PART 3: CALL TO ACTION (22 - 30s) ---------- */
-    // Wave strip is 220px tall; it rises to 980px for the CTA.
+    // Wave strip is 220px tall; it rises to 1060px for the CTA.
     const kw = pi(t, 21.7, 22.9);
-    $('wave').style.height = lerp(220, 980, kw) + 'px';
+    $('wave').style.height = lerp(220, 1060, kw) + 'px';
     show($('part3'), t >= 22 ? 1 : 0);
     const cl = $('ctaLogo');
     const kc = p(t, 22.3, 23.3);
     cl.style.opacity = kc;
     cl.style.transform = `scale(${lerp(0.8, 1, kc)})`;
-    stagger($('part3'), t, 22.8, 0.45);
+    stagger($('part3'), t, 22.7, 0.38);   // QR is fully in by about 25.2s
     $('underline').style.transform = `scaleX(${p(t, 24.0, 25.0)})`;
     // Gentle pulse on the phone number once it has landed.
-    if (t > 24.4) {
+    if (t > 24.6) {
       const ph = document.querySelector('#part3 .phone');
-      ph.style.transform = `scale(${1 + 0.025 * Math.sin((t - 24.4) * 3)})`;
+      ph.style.transform = `scale(${1 + 0.025 * Math.sin((t - 24.6) * 3)})`;
     }
   };
 </script>

@@ -7,6 +7,7 @@ Motion graphics videos written as code. Each video is one HTML file; the rendere
 - `videos/` — one HTML file per video
 - `brand.css` — shared colors and fonts (load with `<link rel="stylesheet" href="../brand.css">`)
 - `assets/` — logos, photos and music (reference as `../assets/...`)
+- `tools/make-qr.py` — brand-colored QR code SVG (needs `pip install segno`): `python3 tools/make-qr.py https://www.tc-seniorliving.com assets/qr-tc-seniorliving.svg`
 - `tools/make-beat.py` — makes an original Caribbean (calypso / steel pan) beat: `python3 tools/make-beat.py 30 assets/audio/caribbean-beat.wav`
 - `out/` — rendered MP4s (`out/stills/` holds preview images and is not committed)
 - `src/` — the first TCSPS promo, made before the studio format existed
