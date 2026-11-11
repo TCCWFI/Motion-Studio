@@ -1,0 +1,32 @@
+/* brand.css — shared colors and fonts for every video.
+   Videos load it with: <link rel="stylesheet" href="../brand.css">
+   Default brand: Treasure Coast Senior Placement Solutions (TCSPS). */
+
+:root {
+  /* Colors */
+  --navy:      #0f2c5c;  /* main brand color, headlines */
+  --navy-2:    #1c4587;  /* body text, secondary */
+  --gold:      #f5b922;  /* accents, ribbons, highlights */
+  --gold-text: #c98f00;  /* gold that is readable on light backgrounds */
+  --sky:       #dcecf8;  /* light background top */
+  --white:     #ffffff;
+  --ink:       #1b1b1b;
+
+  /* Fonts */
+  --font-head: 'Inter Display', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Background */
+  --bg: linear-gradient(180deg, var(--sky) 0%, #f7fbfe 55%, var(--white) 100%);
+}
+
+/* Base frame: every video draws into a full-size stage. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body { font-family: var(--font-body); color: var(--navy); background: var(--bg);
+       -webkit-font-smoothing: antialiased; }
+
+/* Text helpers */
+.headline { font-family: var(--font-head); font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; }
+.body     { font-weight: 500; line-height: 1.35; color: var(--navy-2); }
+.accent   { color: var(--gold-text); }

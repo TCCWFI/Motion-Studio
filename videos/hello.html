@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../brand.css">
+<style>
+  #stage { position:absolute; inset:0; display:flex; flex-direction:column;
+           align-items:center; justify-content:center; gap:36px; }
+  h1 { font-size:132px; }
+  .bar { height:14px; width:900px; background:var(--gold); border-radius:7px; transform-origin:left center; }
+  .sub { font-size:44px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <h1 class="headline" id="title">Hello from my <span class="accent">studio</span></h1>
+  <div class="bar" id="bar"></div>
+  <div class="sub body" id="sub">Motion graphics, written as code</div>
+</div>
+<script>
+  window.DURATION = 3;
+  window.SIZE = [1920, 1080];
+
+  const clamp = (x) => Math.min(1, Math.max(0, x));
+  const easeOut = (x) => 1 - Math.pow(1 - clamp(x), 3);
+  // Progress from 0 to 1 between time a and time b, eased.
+  const p = (t, a, b) => easeOut((t - a) / (b - a));
+
+  const title = document.getElementById('title');
+  const bar = document.getElementById('bar');
+  const sub = document.getElementById('sub');
+
+  window.render = (t) => {
+    const k1 = p(t, 0.1, 0.9);           // title rises in
+    title.style.opacity = k1;
+    title.style.transform = `translateY(${(1 - k1) * 60}px)`;
+
+    bar.style.transform = `scaleX(${p(t, 0.6, 1.4)})`;   // gold bar draws left to right
+
+    const k3 = p(t, 1.1, 1.8);           // subtitle fades in
+    sub.style.opacity = k3;
+    sub.style.transform = `translateY(${(1 - k3) * 30}px)`;
+
+    const out = p(t, 2.6, 3.0);          // short fade to white at the end
+    document.getElementById('stage').style.opacity = 1 - out;
+  };
+</script>
+</body>
+</html>
