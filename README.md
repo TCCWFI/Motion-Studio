@@ -6,7 +6,8 @@ Motion graphics videos written as code. Each video is one HTML file; the rendere
 
 - `videos/` — one HTML file per video
 - `brand.css` — shared colors and fonts (load with `<link rel="stylesheet" href="../brand.css">`)
-- `assets/` — logos and photos (reference as `../assets/...`)
+- `assets/` — logos, photos and music (reference as `../assets/...`)
+- `tools/make-beat.py` — makes an original Caribbean (calypso / steel pan) beat: `python3 tools/make-beat.py 30 assets/audio/caribbean-beat.wav`
 - `out/` — rendered MP4s (`out/stills/` holds preview images and is not committed)
 - `src/` — the first TCSPS promo, made before the studio format existed
 
@@ -19,6 +20,7 @@ Motion graphics videos written as code. Each video is one HTML file; the rendere
   window.render = (t) => {        // draw the exact frame at time t (may be async)
     // set styles, transforms, canvas drawing... from t only
   };
+  window.AUDIO = '../assets/audio/caribbean-beat.wav';   // optional soundtrack
 </script>
 ```
 
@@ -37,6 +39,6 @@ Saves 3 evenly spaced preview images to `out/stills/`.
 ```bash
 node render.mjs videos/hello.html
 ```
-Renders every frame at 30 fps to `out/hello.mp4` (H.264, with a silent audio track).
+Renders every frame at 30 fps to `out/hello.mp4` (H.264 + AAC). Uses `window.AUDIO` as the soundtrack, trimmed or padded to the video length; without it, the MP4 gets a silent track.
 
 Needs Node.js, ffmpeg and Playwright with Chromium.

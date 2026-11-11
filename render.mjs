@@ -7,11 +7,12 @@
 //   window.DURATION = seconds
 //   window.SIZE     = [width, height]
 //   window.render   = (t) => { ...draw the exact frame at time t... }
+//   window.AUDIO    = '../assets/audio/x.wav'   (optional soundtrack, path relative to the video)
 // render(t) may be async. No CSS animations, transitions or timers.
 
 import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 
 // Find Playwright: local node_modules first, then the pre-installed global copy.
@@ -61,6 +62,7 @@ await page.addInitScript(() => {
 await page.goto('file://' + path.resolve(file));
 const meta = await page.evaluate(() => ({
   duration: window.DURATION, size: window.SIZE, hasRender: typeof window.render === 'function',
+  audio: window.AUDIO || null,
 }));
 if (!meta.hasRender || !(meta.duration > 0) || !Array.isArray(meta.size)) {
   console.error(`${file} must set window.DURATION, window.SIZE and window.render(t).`);
@@ -93,11 +95,21 @@ if (stills) {
 
 const frames = Math.round(meta.duration * FPS);
 const outFile = path.join(outDir, `${name}.mp4`);
+// Soundtrack: window.AUDIO if set, otherwise a silent track (some apps reject video-only files).
+// Audio is trimmed or padded to the video length.
+let audioIn = ['-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo'];
+if (meta.audio) {
+  const a = path.resolve(path.dirname(file), meta.audio);
+  if (!existsSync(a)) { console.error('AUDIO file not found: ' + a); await browser.close(); process.exit(1); }
+  audioIn = ['-i', a];
+  console.log('audio', path.relative(root, a));
+}
 const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error',
   '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
-  '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo',   // silent track: some apps reject video-only files
+  ...audioIn,
+  '-map', '0:v', '-map', '1:a', '-af', 'apad', '-t', String(meta.duration),
   '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
-  '-c:a', 'aac', '-b:a', '128k', '-shortest', '-movflags', '+faststart', outFile],
+  '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', outFile],
   { stdio: ['pipe', 'inherit', 'inherit'] });
 const ffDone = new Promise((res, rej) => ff.on('close', c => c === 0 ? res() : rej(new Error('ffmpeg exit ' + c))));
 
