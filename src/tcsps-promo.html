@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --navy:#0f2c5c; --navy2:#1c4587; --gold:#f5b922; --sky:#e6f1fa; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html, body { width:100%; height:100%; overflow:hidden; }
+  body { font-family:'Inter', sans-serif; color:var(--navy);
+         background:linear-gradient(180deg,#dcecf8 0%,#f7fbfe 55%,#ffffff 100%); }
+  #stage { position:absolute; inset:0; }
+  .scene { position:absolute; inset:0; display:flex; flex-direction:column;
+           align-items:center; justify-content:center; text-align:center;
+           padding:calc(var(--u)*7) calc(var(--u)*7) calc(var(--u)*16); gap:calc(var(--u)*4); opacity:0; }
+  .wave { position:absolute; left:0; bottom:0; width:100%; height:calc(var(--u)*14); }
+  h1 { font-weight:800; font-size:calc(var(--u)*7.4); line-height:1.12; letter-spacing:-0.01em; }
+  h2 { font-weight:700; font-size:calc(var(--u)*5.6); line-height:1.18; }
+  p  { font-weight:500; font-size:calc(var(--u)*4.4); line-height:1.3; color:var(--navy2); }
+  .gold { color:#c98f00; white-space:nowrap; }
+  .pill { white-space:nowrap; }
+  .logo { width:calc(var(--u)*62); }
+  .pill { background:var(--navy); color:#fff; font-weight:700; border-radius:999px;
+          font-size:calc(var(--u)*5); padding:calc(var(--u)*2.2) calc(var(--u)*6); }
+  .pills { display:flex; flex-direction:column; gap:calc(var(--u)*3); align-items:center; }
+  .photo { width:calc(var(--u)*82); aspect-ratio:846/520; border-radius:calc(var(--u)*4);
+           overflow:hidden; box-shadow:0 calc(var(--u)*2) calc(var(--u)*6) rgba(15,44,92,.25);
+           border:calc(var(--u)*0.9) solid #fff; }
+  .photo img { width:100%; height:100%; object-fit:cover; display:block; }
+  .badge { background:var(--gold); color:var(--navy); font-weight:800; border-radius:calc(var(--u)*2);
+           font-size:calc(var(--u)*4); padding:calc(var(--u)*1.6) calc(var(--u)*4); }
+  .checks { display:flex; flex-direction:column; gap:calc(var(--u)*4); align-items:stretch; text-align:left; }
+  .check { display:flex; align-items:center; gap:calc(var(--u)*3.5); background:#fff;
+           border-radius:calc(var(--u)*3); padding:calc(var(--u)*3) calc(var(--u)*4);
+           box-shadow:0 calc(var(--u)*1) calc(var(--u)*4) rgba(15,44,92,.12);
+           font-weight:700; font-size:calc(var(--u)*4.6); }
+  .tick { flex:none; width:calc(var(--u)*9); height:calc(var(--u)*9); border-radius:50%;
+          background:var(--gold); display:flex; align-items:center; justify-content:center; }
+  .tick svg { width:60%; height:60%; }
+  .phone { font-weight:900; font-size:calc(var(--u)*10.5); color:var(--navy); letter-spacing:-0.01em; }
+  .site  { font-weight:700; font-size:calc(var(--u)*5.6); color:#fff; background:var(--navy);
+           border-radius:calc(var(--u)*2); padding:calc(var(--u)*1.8) calc(var(--u)*5); }
+  .tag { font-weight:700; font-size:calc(var(--u)*4.4); color:#c98f00; letter-spacing:0.04em; }
+  /* Landscape tweaks */
+  .land .row { display:flex; align-items:center; gap:calc(var(--u)*7); text-align:left; }
+  .land .row .txt { display:flex; flex-direction:column; gap:calc(var(--u)*3); align-items:flex-start; }
+  .land .photo { width:calc(var(--u)*92); }
+  .land .pills { flex-direction:row; }
+  .land .logo { width:calc(var(--u)*42); }
+  .land .scene { gap:calc(var(--u)*2.6); padding-top:calc(var(--u)*4); }
+  .land #s5 .phone { font-size:calc(var(--u)*9.5); }
+  .land h1 { font-size:calc(var(--u)*7.6); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg class="wave" viewBox="0 0 1000 140" preserveAspectRatio="none">
+    <path d="M0,60 C250,0 500,120 1000,40 L1000,140 L0,140 Z" fill="#0f2c5c"/>
+    <path d="M0,60 C250,0 500,120 1000,40" fill="none" stroke="#f5b922" stroke-width="8"/>
+  </svg>
+
+  <!-- S1: hook -->
+  <div class="scene" id="s1">
+    <img class="logo a" src="../assets/logo.png">
+    <h1 class="a">Looking for senior living on the <span class="gold">Treasure Coast?</span></h1>
+  </div>
+
+  <!-- S2: the problem -->
+  <div class="scene" id="s2">
+    <h2 class="a">Assisted living.<br>Memory care.<br>A hospital discharge.</h2>
+    <div class="pills">
+      <div class="pill a">Too many choices</div>
+      <div class="pill a">Medicaid questions</div>
+      <div class="pill a">Not much time</div>
+    </div>
+    <p class="a">It can feel overwhelming. You do not have to do it alone.</p>
+  </div>
+
+  <!-- S3: who we are -->
+  <div class="scene" id="s3">
+    <div class="row">
+      <div class="photo a"><img id="cpl" src="../assets/couple.jpg"></div>
+      <div class="txt">
+        <h1 class="a">We are a <span class="gold">nurse-led</span> placement team.</h1>
+        <div class="badge a">MSN-RN &middot; Dementia Certified</div>
+        <p class="a">Our help is free to your family.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: what we do -->
+  <div class="scene" id="s4">
+    <h2 class="a">How we help</h2>
+    <div class="checks">
+      <div class="check a"><span class="tick">✓</span>We find options that fit your needs</div>
+      <div class="check a"><span class="tick">✓</span>We tour communities with you</div>
+      <div class="check a"><span class="tick">✓</span>We help with Medicaid questions</div>
+    </div>
+  </div>
+
+  <!-- S5: call to action -->
+  <div class="scene" id="s5">
+    <img class="logo a" src="../assets/logo.png">
+    <p class="a" style="font-weight:700">Call us for a free consultation</p>
+    <div class="phone a">772-732-1223</div>
+    <div class="site a">TC-SeniorLiving.com</div>
+    <div class="tag a">FREE &middot; LOCAL &middot; NURSE-LED</div>
+  </div>
+</div>
+
+<script>
+  const q = new URLSearchParams(location.search);
+  const W = +q.get('w') || 1080, H = +q.get('h') || 1920;
+  document.documentElement.style.setProperty('--u', (Math.min(W, H) / 100) * (W > H ? 1 : 1.12) + 'px');
+  if (W > H) document.body.classList.add('land');
+  // In portrait the S3 row stacks vertically.
+  if (W <= H) document.querySelectorAll('.row').forEach(r => {
+    r.style.display = 'flex'; r.style.flexDirection = 'column'; r.style.alignItems = 'center';
+    r.style.gap = 'calc(var(--u)*5)';
+    r.querySelector('.txt').style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3)';
+  });
+  // Replace tick text with an SVG check mark.
+  document.querySelectorAll('.tick').forEach(t => t.innerHTML =
+    '<svg viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#0f2c5c" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+
+  const scenes = [ ['s1', 0, 4], ['s2', 4, 8], ['s3', 8, 13], ['s4', 13, 17], ['s5', 17, 20] ];
+  const clamp = (x) => Math.max(0, Math.min(1, x));
+  const ease = (x) => 1 - Math.pow(1 - clamp(x), 3);
+  const FADE = 0.4, STAGGER = 0.35, IN = 0.6;
+
+  window.seek = (t) => {
+    for (const [id, a, b] of scenes) {
+      const el = document.getElementById(id);
+      const last = id === 's5';
+      const vis = clamp((t - a) / FADE) * (last ? 1 : clamp((b - t) / FADE));
+      el.style.opacity = vis;
+      el.style.display = vis > 0 ? 'flex' : 'none';
+      if (!vis) continue;
+      const items = el.querySelectorAll('.a');
+      items.forEach((it, i) => {
+        const k = ease((t - a - 0.15 - i * STAGGER) / IN);
+        const isLogo = it.classList.contains('logo');
+        it.style.opacity = k;
+        it.style.transform = isLogo
+          ? `scale(${0.85 + 0.15 * k})`
+          : `translateY(${(1 - k) * 40}px)`;
+      });
+    }
+    // Slow zoom on the photo.
+    const z = 1.0 + 0.08 * clamp((t - 8) / 5);
+    document.getElementById('cpl').style.transform = `scale(${z})`;
+    // CTA phone gentle pulse after it appears.
+    const ph = document.querySelector('#s5 .phone');
+    if (t > 18.6) ph.style.transform = `scale(${1 + 0.03 * Math.sin((t - 18.6) * 4)})`;
+  };
+  window.seek(0);
+</script>
+</body>
+</html>
