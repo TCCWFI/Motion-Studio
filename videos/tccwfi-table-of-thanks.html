@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../brand.css">
+<style>
+  /* TCCWFI Cares: A Table of Thanks. 1080 x 1920, 39 s. One music bar = 3 s.
+     0-6   hook: a quiet Thanksgiving
+     6-11  caregivers deserve a seat too
+     11-21 title reveal over the dinner table photo (boom at 12 s), the ask
+     21-27 the donation wish list
+     27-30 fill one chair, or the whole table
+     30-39 end card: deadline, drop-off, QR, website                        */
+  body { background:#1a0e07; }
+  .full { position:absolute; left:0; top:0; width:1080px; height:1920px; }
+  .c { position:absolute; left:0; width:1080px; text-align:center; padding:0 80px; }
+  .serif { font-family:var(--font-head); }
+  .cream { color:#fbf1e1; }
+  .goldT { color:var(--gold); }
+  .orangeT { color:#f39a4f; }
+
+  /* Backgrounds */
+  #bgDark { background:radial-gradient(ellipse 80% 60% at 50% 45%, #4a2812 0%, #22120a 55%, #120904 100%); }
+  #bgPhoto { overflow:hidden; }
+  #bgPhoto img { position:absolute; left:50%; top:50%; height:2400px; width:auto; transform:translate(-50%,-50%);
+                 filter:blur(46px) brightness(.42) saturate(1.25); }
+  #bgCream { background:radial-gradient(ellipse 90% 70% at 50% 40%, #fffaf2 0%, #fbf0dd 60%, #f3dfbf 100%); }
+
+  /* Light */
+  .bokeh { position:absolute; border-radius:50%;
+           background:radial-gradient(circle, rgba(255,196,110,.55) 0%, rgba(255,170,80,.18) 45%, rgba(255,150,60,0) 70%); }
+  #flash { background:radial-gradient(ellipse 70% 50% at 50% 50%, rgba(255,226,170,.85), rgba(255,200,120,0) 70%); }
+  #vignette { background:radial-gradient(ellipse 75% 65% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%); }
+  #grain { position:absolute; left:0; top:0; width:1080px; height:1920px; image-rendering:pixelated; mix-blend-mode:overlay; }
+  .leaf { position:absolute; left:0; top:0; width:100px; height:100px; }
+
+  /* Story lines */
+  .line { font-family:var(--font-head); font-size:88px; line-height:1.18; font-weight:400; }
+  .line em { font-style:italic; color:var(--gold); }
+
+  /* Title + photo */
+  #band { position:absolute; left:0; top:690px; width:1080px; height:580px; overflow:hidden;
+          -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 12%, #000 88%, transparent 100%); }
+  #band img { position:absolute; top:0; left:0; height:580px; width:auto; }
+  .kicker { font-family:var(--font-body); font-weight:800; font-size:46px; letter-spacing:.32em; color:var(--gold); }
+  .title { font-family:var(--font-head); font-style:italic; font-weight:700; font-size:132px; line-height:1.0;
+           color:#fbf1e1; text-shadow:0 6px 40px rgba(0,0,0,.45); }
+  .ask { font-family:var(--font-head); font-size:54px; white-space:nowrap; padding:0; line-height:1.22; color:#fbf1e1; }
+  .ribbon { display:inline-block; white-space:nowrap; font-family:var(--font-body); font-weight:800; font-size:40px; letter-spacing:.03em;
+            color:#fff; background:linear-gradient(90deg, #c9461a, #f06a22 50%, #c9461a); padding:20px 46px; border-radius:8px;
+            box-shadow:0 10px 30px rgba(0,0,0,.35); }
+
+  /* Wish list */
+  .wlHead { font-family:var(--font-head); font-style:italic; font-weight:700; font-size:80px; white-space:nowrap; padding:0; color:#fbf1e1; }
+  .wlSub { font-family:var(--font-body); font-weight:600; font-size:44px; color:var(--gold); letter-spacing:.02em; }
+  .items { position:absolute; left:90px; width:900px; top:620px; display:flex; flex-direction:column; gap:30px; }
+  .item { display:flex; align-items:center; gap:30px; padding:26px 34px; border-radius:24px;
+          background:rgba(255,246,232,.10); border:2px solid rgba(247,181,44,.45);
+          font-family:var(--font-body); font-weight:600; font-size:46px; color:#fbf1e1; line-height:1.2; }
+  .item.big { background:rgba(240,106,34,.22); border-color:rgba(247,181,44,.85); font-weight:800; }
+  .item svg { flex:none; width:70px; height:70px; }
+
+  /* Fill the table */
+  .fill { font-family:var(--font-head); font-size:112px; line-height:1.1; color:#fbf1e1; }
+  .fill em { color:var(--gold); }
+
+  /* End card (light) */
+  #logo { position:absolute; left:50%; top:90px; width:640px; margin-left:-320px; }
+  .dlKick { font-family:var(--font-body); font-weight:800; font-size:44px; letter-spacing:.18em; color:var(--teal); }
+  .dlDate { font-family:var(--font-head); font-weight:900; font-size:92px; font-variant-numeric:lining-nums; white-space:nowrap; padding:0; color:var(--orange); line-height:1.05; }
+  .drop { font-family:var(--font-body); font-size:42px; line-height:1.35; color:var(--navy); }
+  .drop b { font-weight:800; }
+  #qr { position:absolute; left:50%; top:1140px; width:360px; height:360px; margin-left:-180px; background:#fff;
+        border-radius:26px; padding:18px; box-shadow:0 0 0 7px var(--orange), 0 16px 40px rgba(120,60,10,.25); }
+  #qr img { width:324px; height:324px; display:block; }
+  .scan { font-family:var(--font-body); font-weight:700; font-size:38px; color:var(--teal); }
+  .web { font-family:var(--font-body); font-weight:800; font-size:44px; color:var(--navy); }
+  .mail { font-family:var(--font-body); font-weight:500; font-size:34px; color:var(--navy-2); }
+</style>
+</head>
+<body class="brand-tccwfi">
+  <div class="full" id="bgDark"></div>
+  <div class="full" id="bgPhoto"><img src="../assets/tccwfi/table-photo.jpg"></div>
+  <div class="full" id="bokehLayer"></div>
+  <div class="full" id="leafBack"></div>
+
+  <!-- 1: hook -->
+  <div class="full" id="s1">
+    <div class="c line cream a" style="top:720px">For some seniors on<br>the Treasure Coast,</div>
+    <div class="c line cream a" style="top:960px">Thanksgiving is<br><em>a quiet day.</em></div>
+  </div>
+
+  <!-- 2: caregivers -->
+  <div class="full" id="s2">
+    <div class="c line cream a" style="top:700px">And the caregivers<br>who care for them</div>
+    <div class="c line cream a" style="top:950px">deserve <em>a seat<br>at the table,</em> too.</div>
+  </div>
+
+  <!-- 3: title over the table -->
+  <div class="full" id="s3">
+    <div class="c kicker a" style="top:330px">TCCWFI CARES</div>
+    <div class="c title a" style="top:420px">A Table<br>of Thanks</div>
+    <div id="band"><img id="bandImg" src="../assets/tccwfi/table-photo.jpg"></div>
+    <div class="c ask a" style="top:1350px">Help bring Thanksgiving dinners<br>to seniors and caregivers in need.</div>
+    <div class="c a" style="top:1600px"><span class="ribbon">GIVE A MEAL. SHARE THE THANKS.</span></div>
+  </div>
+
+  <!-- 4: wish list -->
+  <div class="full" id="s4">
+    <div class="c wlHead a" style="top:350px">Fill a Thanksgiving table</div>
+    <div class="c wlSub a" style="top:500px">Each donation includes:</div>
+    <div class="items">
+      <div class="item big a"><svg viewBox="0 0 100 100"><use href="#leafShape" fill="#f7b52c"/></svg>A $25 Publix or Walmart gift card for a turkey</div>
+      <div class="item a"><svg viewBox="0 0 100 100"><use href="#leafShape" fill="#f06a22"/></svg>1 bag or box of stuffing</div>
+      <div class="item a"><svg viewBox="0 0 100 100"><use href="#leafShape" fill="#d9541e"/></svg>1 bag or box of mashed potatoes</div>
+      <div class="item a"><svg viewBox="0 0 100 100"><use href="#leafShape" fill="#f7b52c"/></svg>1 jar of gravy</div>
+      <div class="item a"><svg viewBox="0 0 100 100"><use href="#leafShape" fill="#f06a22"/></svg>Canned goods</div>
+    </div>
+  </div>
+
+  <!-- 5: fill the table -->
+  <div class="full" id="s5">
+    <div class="c fill a" style="top:700px">Fill one chair.</div>
+    <div class="c fill a" style="top:880px"><em>Or fill the<br>whole table.</em></div>
+  </div>
+
+  <!-- 6: end card -->
+  <div class="full" id="bgCream"></div>
+  <div class="full" id="s6">
+    <img id="logo" src="../assets/tccwfi/logo.png">
+    <div class="c dlKick a" style="top:560px">DONATE ON OR BEFORE FRIDAY</div>
+    <div class="c dlDate a" style="top:625px">November 20, 2026</div>
+    <div class="c drop a" style="top:775px"><b>Drop-off: The Life Shift Cafe</b><br>4311 SW Darwin Blvd<br>Port St. Lucie, FL 34983</div>
+    <div class="c ribbon-wrap a" style="top:1000px"><span class="ribbon">GIVE A MEAL. SHARE THE THANKS.</span></div>
+    <div id="qr" class="a"><img src="../assets/tccwfi/qr-website.svg"></div>
+    <div class="c scan a" style="top:1535px">Scan to visit our website</div>
+    <div class="c web a" style="top:1600px">TreasureCoastCaregiverInc.org</div>
+    <div class="c mail a" style="top:1670px">TreasureCoastCaregiverInc@gmail.com</div>
+  </div>
+
+  <div class="full" id="leafLayer"></div>
+  <div class="full" id="flash"></div>
+  <div class="full" id="vignette"></div>
+  <canvas id="grain" width="360" height="640"></canvas>
+
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <path id="leafShape" d="M50 2 L57 22 L71 13 L67 33 L89 28 L79 45 L97 53 L74 60 L81 77 L60 70 L53 90 L50 99 L47 90 L40 70 L19 77 L26 60 L3 53 L21 45 L11 28 L33 33 L29 13 L43 22 Z"/>
+    </defs>
+  </svg>
+
+<script>
+  window.DURATION = 39;
+  window.SIZE = [1080, 1920];
+  window.AUDIO = '../assets/audio/thanksgiving-score.wav';   // made by tools/make-score.py
+  window.CRF = 23;   // film grain is costly to compress; 23 keeps the file well under GitHub's 100 MB limit
+
+  const $ = (id) => document.getElementById(id);
+  const clamp = (x) => Math.min(1, Math.max(0, x));
+  const easeOut = (x) => 1 - Math.pow(1 - clamp(x), 3);
+  const easeInOut = (x) => { x = clamp(x); return x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2; };
+  const p = (t, a, b) => easeOut((t - a) / (b - a));
+  const lerp = (a, b, k) => a + (b - a) * k;
+  // Visible from a to b, with fade in and fade out.
+  const win = (t, a, b, fi = .6, fo = .6) => clamp((t - a) / fi) * clamp((b - t) / fo);
+  const show = (el, o) => { el.style.opacity = o; el.style.visibility = o > 0.001 ? 'visible' : 'hidden'; };
+  // Cinematic entrance: fade up out of a soft blur.
+  const reveal = (el, t, a, dur = 1.1, dist = 26) => {
+    const k = p(t, a, a + dur);
+    el.style.opacity = k;
+    el.style.filter = k < 1 ? `blur(${(1 - k) * 14}px)` : 'none';
+    el.style.transform = `translateY(${(1 - k) * dist}px)`;
+  };
+  // Small deterministic random generator.
+  const rand = (seed) => { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); };
+
+  // ---- Bokeh lights (positions fixed by seed) ----
+  const R1 = rand(42), bokeh = [];
+  for (let i = 0; i < 26; i++) {
+    const el = document.createElement('div'); el.className = 'bokeh';
+    const size = 60 + R1() * 220;
+    Object.assign(el.style, { width: size + 'px', height: size + 'px' });
+    $('bokehLayer').appendChild(el);
+    bokeh.push({ el, size, x: R1() * 1080, y: R1() * 1920, vx: (R1() - .5) * 14, vy: -(6 + R1() * 18),
+                 ph: R1() * 6.28, fr: .4 + R1() * .9, base: .35 + R1() * .5 });
+  }
+
+  // ---- Falling leaves ----
+  const R2 = rand(7), leaves = [];
+  const leafColors = ['#d9541e', '#f06a22', '#b8321a', '#f7b52c', '#e8862a'];
+  for (let i = 0; i < 18; i++) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg'); svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('class', 'leaf');
+    const use = document.createElementNS(ns, 'use'); use.setAttribute('href', '#leafShape');
+    use.setAttribute('fill', leafColors[i % leafColors.length]);
+    const stem = document.createElementNS(ns, 'path'); stem.setAttribute('d', 'M50 99 L50 112');
+    stem.setAttribute('stroke', leafColors[i % leafColors.length]); stem.setAttribute('stroke-width', '4');
+    svg.appendChild(use); svg.appendChild(stem); svg.style.overflow = 'visible';
+    const depth = R2();                                   // 0 far ... 1 near
+    $('leafBack').appendChild(svg);                       // all leaves fall behind the words
+    leaves.push({ el: svg, x: R2() * 1080, off: R2() * 2200, speed: 70 + depth * 120, size: .35 + depth * .75,
+                  amp: 40 + R2() * 80, fr: .5 + R2() * .7, ph: R2() * 6.28, rot: (R2() - .5) * 140, r0: R2() * 360,
+                  blur: depth > .8 ? (depth - .8) * 30 : (depth < .25 ? 2 : 0), op: .55 + depth * .4 });
+  }
+
+  // ---- Film grain ----
+  const g = $('grain').getContext('2d'), gImg = g.createImageData(360, 640);
+  const drawGrain = (frame, strength) => {
+    const r = rand(1000 + frame), d = gImg.data;
+    for (let i = 0; i < d.length; i += 4) { const v = 128 + (r() - .5) * 255; d[i] = d[i+1] = d[i+2] = v; d[i+3] = 255; }
+    g.putImageData(gImg, 0, 0);
+    $('grain').style.opacity = strength;
+  };
+
+  // Faster cross-fades for elements in each scene.
+  const stagger = (box, t, start, gap, dur = 1.1) =>
+    box.querySelectorAll('.a').forEach((el, i) => reveal(el, t, start + i * gap, dur));
+
+  window.render = (t) => {
+    const frame = Math.round(t * 30);
+
+    // ---------- backgrounds ----------
+    show($('bgPhoto'), win(t, 11.2, 27.4, .9, .6));
+    $('bgPhoto').querySelector('img').style.transform = `translate(-50%,-50%) scale(${1 + .06 * clamp((t - 11) / 16)})`;
+    const cream = clamp((t - 29.7) / .8);
+    show($('bgCream'), cream);
+    show($('bokehLayer'), (1 - cream) * (t < 11.2 || t > 26.8 ? 1 : .55));
+
+    for (const b of bokeh) {
+      const x = ((b.x + b.vx * t) % 1180 + 1180) % 1180 - 50;
+      const y = ((b.y + b.vy * t) % 2020 + 2020) % 2020 - 50;
+      b.el.style.transform = `translate(${x - b.size/2}px, ${y - b.size/2}px)`;
+      b.el.style.opacity = b.base * (.75 + .25 * Math.sin(t * b.fr + b.ph));
+    }
+    for (const L of leaves) {
+      const y = ((t * L.speed + L.off) % 2200) - 140;
+      const x = L.x + Math.sin(t * L.fr + L.ph) * L.amp;
+      const rot = L.r0 + t * L.rot + Math.sin(t * L.fr * 1.3 + L.ph) * 25;
+      const flip = Math.cos(t * L.fr * 1.7 + L.ph);         // tumbling in 3D
+      L.el.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg) scale(${L.size}, ${L.size * (.35 + .65 * Math.abs(flip))})`;
+      L.el.style.filter = L.blur ? `blur(${L.blur}px)` : 'none';
+      // On the end card, leaves fade out near the QR code so it always scans.
+      const cx = x + 50, cy = y + 50;
+      const dx = Math.max(0, Math.abs(cx - 540) - 230), dy = Math.max(0, Math.abs(cy - 1320) - 230);
+      const away = clamp(Math.hypot(dx, dy) / 120);
+      L.el.style.opacity = L.op * (t < 1 ? t : 1) * (1 - cream * (1 - away));
+    }
+
+    // ---------- 1: hook (0-6) ----------
+    show($('s1'), win(t, 0, 5.9, .01, .6));
+    stagger($('s1'), t, .5, 1.7, 1.4);
+
+    // ---------- 2: caregivers (6-11.2) ----------
+    show($('s2'), win(t, 6.0, 11.0, .01, .6));
+    stagger($('s2'), t, 6.3, 1.7, 1.4);
+
+    // ---------- 3: title + photo (11.2-21) ----------
+    show($('s3'), win(t, 11.2, 21.0, .5, .6));
+    const s3 = $('s3').querySelectorAll('.a');
+    reveal(s3[0], t, 11.9, 1.0);                        // TCCWFI CARES
+    reveal(s3[1], t, 12.15, 1.4, 40);                   // A Table of Thanks
+    reveal(s3[2], t, 15.4, 1.2);                        // Help bring...
+    reveal(s3[3], t, 17.2, .9);                         // ribbon
+    const kb = clamp((t - 11.2) / 9.8);
+    $('band').style.opacity = clamp((t - 11.4) / .8);
+    const bw = 580 * 1024 / 407;                        // band image width at 580px tall
+    $('bandImg').style.transform = `translateX(${lerp(0, 1080 - bw, easeInOut(kb))}px) scale(${lerp(1.0, 1.04, kb)})`;
+    // Warm flash with the boom at 12 s.
+    show($('flash'), Math.max(0, 1 - Math.abs(t - 12.05) / .7) * .7);
+
+    // ---------- 4: wish list (21-27) ----------
+    show($('s4'), win(t, 21.0, 27.0, .4, .6));
+    stagger($('s4'), t, 21.2, .55, .9);
+
+    // ---------- 5: fill the table (27-30) ----------
+    show($('s5'), win(t, 27.0, 29.9, .3, .5));
+    stagger($('s5'), t, 27.1, 1.1, 1.0);
+
+    // ---------- 6: end card (30-39) ----------
+    show($('s6'), clamp((t - 29.8) / .5));
+    const lg = $('logo'), kl = p(t, 30.0, 31.2);
+    lg.style.opacity = kl; lg.style.transform = `scale(${lerp(.9, 1, kl)})`;
+    stagger($('s6'), t, 30.6, .42, .8);                 // QR fully in by about 33 s
+
+    // ---------- finishing ----------
+    $('vignette').style.opacity = 1 - cream * .75;
+    drawGrain(frame, lerp(.10, .05, cream));
+  };
+</script>
+</body>
+</html>

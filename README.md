@@ -8,6 +8,7 @@ Motion graphics videos written as code. Each video is one HTML file; the rendere
 - `brand.css` — shared colors and fonts (load with `<link rel="stylesheet" href="../brand.css">`)
 - `assets/` — logos, photos and music (reference as `../assets/...`)
 - `tools/make-qr.py` — brand-colored QR code SVG (needs `pip install segno`): `python3 tools/make-qr.py https://www.tc-seniorliving.com assets/qr-tc-seniorliving.svg`
+- `tools/make-score.py` — makes an original warm cinematic score (piano, strings, swells), 39 s: `python3 tools/make-score.py assets/audio/thanksgiving-score.wav`
 - `tools/make-beat.py` — makes an original Caribbean (calypso / steel pan) beat: `python3 tools/make-beat.py 30 assets/audio/caribbean-beat.wav`
 - `out/` — rendered MP4s (`out/stills/` holds preview images and is not committed)
 - `src/` — the first TCSPS promo, made before the studio format existed
@@ -22,6 +23,7 @@ Motion graphics videos written as code. Each video is one HTML file; the rendere
     // set styles, transforms, canvas drawing... from t only
   };
   window.AUDIO = '../assets/audio/caribbean-beat.wav';   // optional soundtrack
+  window.CRF = 23;                // optional quality (default 18); raise it if the file is too big
 </script>
 ```
 
@@ -35,7 +37,7 @@ Common sizes: `[1080, 1920]` vertical (TikTok, Reels, Shorts), `[1920, 1080]` wi
 ```bash
 node render.mjs videos/hello.html --stills 3
 ```
-Saves 3 evenly spaced preview images to `out/stills/`.
+Saves 3 evenly spaced preview images to `out/stills/`. Use `--at 2.5,12,31` for stills at exact times.
 
 ```bash
 node render.mjs videos/hello.html
@@ -43,3 +45,9 @@ node render.mjs videos/hello.html
 Renders every frame at 30 fps to `out/hello.mp4` (H.264 + AAC). Uses `window.AUDIO` as the soundtrack, trimmed or padded to the video length; without it, the MP4 gets a silent track.
 
 Needs Node.js, ffmpeg and Playwright with Chromium.
+
+GitHub rejects files over 100 MB. Videos with film grain or lots of motion compress poorly; set `window.CRF = 23` (or higher) for those.
+
+## Brands
+
+`brand.css` holds TCSPS colors by default. For TCCWFI, add `class="brand-tccwfi"` to `<body>`; it also switches headlines to Playfair Display.

@@ -2,12 +2,14 @@
 // Motion studio renderer.
 //   node render.mjs videos/hello.html             -> out/hello.mp4
 //   node render.mjs videos/hello.html --stills 3  -> out/stills/hello-*.png
+//   node render.mjs videos/hello.html --at 0.5,2  -> stills at exact times
 //
 // A video is an HTML file that sets:
 //   window.DURATION = seconds
 //   window.SIZE     = [width, height]
 //   window.render   = (t) => { ...draw the exact frame at time t... }
 //   window.AUDIO    = '../assets/audio/x.wav'   (optional soundtrack, path relative to the video)
+//   window.CRF      = 23   (optional quality: lower = sharper and bigger file; default 18)
 // render(t) may be async. No CSS animations, transitions or timers.
 
 import { createRequire } from 'node:module';
@@ -31,6 +33,9 @@ const args = process.argv.slice(2);
 const file = args.find(a => !a.startsWith('--') && a.endsWith('.html'));
 const stillsIdx = args.indexOf('--stills');
 const stills = stillsIdx >= 0 ? Math.max(1, parseInt(args[stillsIdx + 1] || '3', 10)) : 0;
+// --at 2.5,12,31 saves stills at exact times instead.
+const atIdx = args.indexOf('--at');
+const atTimes = atIdx >= 0 ? (args[atIdx + 1] || '').split(',').map(Number).filter(n => !isNaN(n)) : null;
 if (!file) {
   console.error('Usage: node render.mjs videos/<name>.html [--stills N]');
   process.exit(1);
@@ -62,7 +67,7 @@ await page.addInitScript(() => {
 await page.goto('file://' + path.resolve(file));
 const meta = await page.evaluate(() => ({
   duration: window.DURATION, size: window.SIZE, hasRender: typeof window.render === 'function',
-  audio: window.AUDIO || null,
+  audio: window.AUDIO || null, crf: window.CRF || 18,
 }));
 if (!meta.hasRender || !(meta.duration > 0) || !Array.isArray(meta.size)) {
   console.error(`${file} must set window.DURATION, window.SIZE and window.render(t).`);
@@ -80,10 +85,10 @@ await page.evaluate(async () => {
 
 const drawAt = (t) => page.evaluate(async (t) => { await window.render(t); }, t);
 
-if (stills) {
+if (stills || atTimes) {
   // Evenly spaced inside the video, e.g. 3 stills of 3s -> 0.75s, 1.5s, 2.25s.
-  for (let i = 1; i <= stills; i++) {
-    const t = +(meta.duration * i / (stills + 1)).toFixed(2);
+  const times = atTimes || Array.from({ length: stills }, (_, i) => +(meta.duration * (i + 1) / (stills + 1)).toFixed(2));
+  for (const t of times) {
     await drawAt(t);
     const p = path.join(outDir, 'stills', `${name}-${t.toFixed(2)}s.png`);
     await page.screenshot({ path: p });
@@ -108,7 +113,7 @@ const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error',
   '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-',
   ...audioIn,
   '-map', '0:v', '-map', '1:a', '-af', 'apad', '-t', String(meta.duration),
-  '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-pix_fmt', 'yuv420p',
+  '-c:v', 'libx264', '-preset', 'medium', '-crf', String(meta.crf), '-pix_fmt', 'yuv420p',
   '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-movflags', '+faststart', outFile],
   { stdio: ['pipe', 'inherit', 'inherit'] });
 const ffDone = new Promise((res, rej) => ff.on('close', c => c === 0 ? res() : rej(new Error('ffmpeg exit ' + c))));
